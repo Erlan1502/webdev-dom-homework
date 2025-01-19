@@ -8,42 +8,7 @@
 
   <body>
     <div class="container">
-      <ul class="comments">
-        <li class="comment">
-          <div class="comment-header">
-            <div>Глеб Фокин</div>
-            <div>12.02.22 12:18</div>
-          </div>
-          <div class="comment-body">
-            <div class="comment-text">
-              Это будет первый комментарий на этой странице
-            </div>
-          </div>
-          <div class="comment-footer">
-            <div class="likes">
-              <span class="likes-counter">3</span>
-              <button class="like-button"></button>
-            </div>
-          </div>
-        </li>
-        <li class="comment">
-          <div class="comment-header">
-            <div>Варвара Н.</div>
-            <div>13.02.22 19:22</div>
-          </div>
-          <div class="comment-body">
-            <div class="comment-text">
-              Мне нравится как оформлена эта страница! ❤
-            </div>
-          </div>
-          <div class="comment-footer">
-            <div class="likes">
-              <span class="likes-counter">75</span>
-              <button class="like-button -active-like"></button>
-            </div>
-          </div>
-        </li>
-      </ul>
+      <ul class="comments"></ul>
       <div class="add-form">
         <input
           type="text"
@@ -65,7 +30,101 @@
 
   <script>
     "use strict";
-    // Код писать здесь
-    console.log("It works!");
+    const addButton = document.querySelector(".add-form-button");
+    const nameInput = document.querySelector(".add-form-name");
+    const commentInput = document.querySelector(".add-form-text");
+    const comments = document.querySelector(".comments");
+
+    const commentsData = [
+      {
+        name: "Глеб Фокин",
+        date: "12.02.22 12:18",
+        text: "Это будет первый комментарий на этой странице",
+        likes: 3,
+        isLiked: false,
+      },
+      {
+        name: "Варвара Н.",
+        date: "13.02.22 19:22",
+        text: "Мне нравится как оформлена эта страница! ❤",
+        likes: 75,
+        isLiked: true,
+      },
+    ];
+
+    const renderComments = () => {
+      comments.innerHTML = commentsData
+        .map(
+          (comment, index) => `
+          <li class="comment">
+            <div class="comment-header">
+              <div>${comment.name}</div>
+              <div>${comment.date}</div>
+            </div>
+            <div class="comment-body">
+              <div class="comment-text">
+                ${comment.text}
+              </div>
+            </div>
+            <div class="comment-footer">
+              <div class="likes">
+                <span class="likes-counter">${comment.likes}</span>
+                <button class="like-button ${
+                  comment.isLiked ? "-active-like" : ""
+                }" data-index="${index}"></button>
+              </div>
+            </div>
+          </li>`
+        )
+        .join("");
+
+      document.querySelectorAll(".like-button").forEach((button) => {
+        button.addEventListener("click", () => {
+          const index = button.dataset.index;
+          const targetComment = commentsData[index];
+
+          if (targetComment.isLiked) {
+            targetComment.likes--;
+          } else {
+            targetComment.likes++;
+          }
+          targetComment.isLiked = !targetComment.isLiked;
+          renderComments();
+        });
+      });
+    };
+
+    addButton.addEventListener("click", () => {
+      const name = nameInput.value.trim();
+      const comment = commentInput.value.trim();
+
+      if (name === "" || comment === "") {
+        alert("Пожалуйста, заполните все поля формы.");
+        return;
+      }
+
+      const currentDate = new Date();
+      const dateString = currentDate.toLocaleString("ru-RU", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+
+      commentsData.push({
+        name,
+        date: dateString,
+        text: comment,
+        likes: 0,
+        isLiked: false,
+      });
+
+      nameInput.value = "";
+      commentInput.value = "";
+      renderComments();
+    });
+
+    renderComments();
   </script>
 </html>
