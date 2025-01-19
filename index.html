@@ -106,8 +106,8 @@
         commentElement.addEventListener("click", () => {
           const index = commentElement.dataset.index;
           const targetComment = commentsData[index];
-          nameInput.value = targetComment.name;
-          commentInput.value = `> ${targetComment.text}\n`;
+          commentInput.value = `${targetComment.name}
+          \n> ${targetComment.text}\n`;
         });
       });
     };
