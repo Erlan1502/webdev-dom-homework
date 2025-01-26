@@ -52,18 +52,26 @@
       },
     ];
 
+    const escapeHTML = (str) =>
+      str
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+
     const renderComments = () => {
       comments.innerHTML = commentsData
         .map(
           (comment, index) => `
-          <li class="comment">
+          <li class="comment" data-index="${index}">
             <div class="comment-header">
-              <div>${comment.name}</div>
+              <div>${escapeHTML(comment.name)}</div>
               <div>${comment.date}</div>
             </div>
             <div class="comment-body">
               <div class="comment-text">
-                ${comment.text}
+                ${escapeHTML(comment.text)}
               </div>
             </div>
             <div class="comment-footer">
@@ -79,7 +87,8 @@
         .join("");
 
       document.querySelectorAll(".like-button").forEach((button) => {
-        button.addEventListener("click", () => {
+        button.addEventListener("click", (event) => {
+          event.stopPropagation();
           const index = button.dataset.index;
           const targetComment = commentsData[index];
 
@@ -92,11 +101,20 @@
           renderComments();
         });
       });
+
+      document.querySelectorAll(".comment").forEach((commentElement) => {
+        commentElement.addEventListener("click", () => {
+          const index = commentElement.dataset.index;
+          const targetComment = commentsData[index];
+          commentInput.value = `${targetComment.name}
+          \n> ${targetComment.text}\n`;
+        });
+      });
     };
 
     addButton.addEventListener("click", () => {
-      const name = nameInput.value.trim();
-      const comment = commentInput.value.trim();
+      const name = escapeHTML(nameInput.value.trim());
+      const comment = escapeHTML(commentInput.value.trim());
 
       if (name === "" || comment === "") {
         alert("Пожалуйста, заполните все поля формы.");
