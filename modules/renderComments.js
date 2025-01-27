@@ -1,6 +1,7 @@
 import { commentsData } from './comments.js';
 import { escapeHTML } from './escapeHTML.js';
-const commentInput = document.querySelector('.add-form-text');
+import { addAnswer, addLike } from './eventOnComments.js';
+// const commentInput = document.querySelector('.add-form-text');
 const comments = document.querySelector('.comments');
 export const renderComments = () => {
     comments.innerHTML = commentsData
@@ -28,28 +29,6 @@ export const renderComments = () => {
         )
         .join('');
 
-    document.querySelectorAll('.like-button').forEach((button) => {
-        button.addEventListener('click', (event) => {
-            event.stopPropagation();
-            const index = button.dataset.index;
-            const targetComment = commentsData[index];
-
-            if (targetComment.isLiked) {
-                targetComment.likes--;
-            } else {
-                targetComment.likes++;
-            }
-            targetComment.isLiked = !targetComment.isLiked;
-            renderComments();
-        });
-    });
-
-    document.querySelectorAll('.comment').forEach((commentElement) => {
-        commentElement.addEventListener('click', () => {
-            const index = commentElement.dataset.index;
-            const targetComment = commentsData[index];
-            commentInput.value = `${targetComment.name}
-        \n> ${targetComment.text}\n`;
-        });
-    });
+    addAnswer();
+    addLike();
 };
