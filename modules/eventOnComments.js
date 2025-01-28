@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
-import { renderComments } from './renderComments';
-import { commentsData } from './comments';
-import { escapeHTML } from './escapeHTML';
+import { renderComments } from './renderComments.js';
+import { commentsData } from './comments.js';
+import { escapeHTML } from './escapeHTML.js';
 const commentInput = document.querySelector('.add-form-text');
 const addButton = document.querySelector('.add-form-button');
 const nameInput = document.querySelector('.add-form-name');
@@ -27,8 +27,7 @@ export const addAnswer = () => {
         commentElement.addEventListener('click', () => {
             const index = commentElement.dataset.index;
             const targetComment = commentsData[index];
-            commentInput.value = `${targetComment.name}
-        \n> ${targetComment.text}\n`;
+            commentInput.value = `${targetComment.name}\n> ${targetComment.text}\n`;
         });
     });
 };
@@ -36,7 +35,6 @@ export const addComment = () => {
     addButton.addEventListener('click', () => {
         const name = escapeHTML(nameInput.value.trim());
         const comment = escapeHTML(commentInput.value.trim());
-
         if (name === '' || comment === '') {
             alert('Пожалуйста, заполните все поля формы.');
             return;
