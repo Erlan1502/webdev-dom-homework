@@ -1,24 +1,34 @@
 /* eslint-disable prettier/prettier */
 import { renderComments } from './renderComments.js';
-import { commentsData, updateCommentsData } from './comments.js';
+import { commentsData } from './comments.js';
 import { escapeHTML } from './escapeHTML.js';
+import { fetchAndRender } from './fetchAndRender.js';
 const commentInput = document.querySelector('.add-form-text');
 const addButton = document.querySelector('.add-form-button');
 const nameInput = document.querySelector('.add-form-name');
+function delay(interval = 300) {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve();
+        }, interval);
+    });
+}
 export const addLike = () => {
     document.querySelectorAll('.like-button').forEach((button) => {
-        button.addEventListener('click', (event) => {
-            event.stopPropagation();
-            const index = button.dataset.index;
-            const targetComment = commentsData[index];
-
-            if (targetComment.isLiked) {
-                targetComment.likes--;
-            } else {
-                targetComment.likes++;
-            }
-            targetComment.isLiked = !targetComment.isLiked;
-            renderComments();
+        button.classList.add('-loading-like');
+        delay(2000).then(() => {
+            button.addEventListener('click', (event) => {
+                event.stopPropagation();
+                const index = button.dataset.index;
+                const targetComment = commentsData[index];
+                if (targetComment.isLiked) {
+                    targetComment.likes--;
+                } else {
+                    targetComment.likes++;
+                }
+                targetComment.isLiked = !targetComment.isLiked;
+                renderComments();
+            });
         });
     });
 };
@@ -52,17 +62,7 @@ export const addComment = () => {
                 likes: 0,
                 isLiked: false,
             }),
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                console.log(data);
-                fetch('https://wedev-api.sky.pro/api/v1/gleb-fokin/comments')
-                    .then((response) => response.json())
-                    .then((updatedData) => {
-                        updateCommentsData(updatedData.comments || []);
-                        renderComments();
-                    });
-            });
+        }).then(fetchAndRender());
 
         nameInput.value = '';
         commentInput.value = '';
