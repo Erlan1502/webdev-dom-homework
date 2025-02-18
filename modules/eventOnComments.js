@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { renderComments } from './renderComments.js';
-import { commentsData } from './comments.js';
+import { commentsData, updateCommentsData } from './comments.js';
 import { escapeHTML } from './escapeHTML.js';
 const commentInput = document.querySelector('.add-form-text');
 const addButton = document.querySelector('.add-form-button');
@@ -27,7 +27,7 @@ export const addAnswer = () => {
         commentElement.addEventListener('click', () => {
             const index = commentElement.dataset.index;
             const targetComment = commentsData[index];
-            commentInput.value = `${targetComment.name}\n> ${targetComment.text}\n`;
+            commentInput.value = `${targetComment.author.name}\n> ${targetComment.text}\n`;
         });
     });
 };
@@ -41,21 +41,28 @@ export const addComment = () => {
         }
 
         const currentDate = new Date();
-        const dateString = currentDate.toLocaleString('ru-RU', {
-            day: '2-digit',
-            month: '2-digit',
-            year: '2-digit',
-            hour: '2-digit',
-            minute: '2-digit',
-        });
-
-        commentsData.push({
-            name,
-            date: dateString,
-            text: comment,
-            likes: 0,
-            isLiked: false,
-        });
+        const dateString = currentDate;
+        //Убрано по причине дальнейшей не надобности, всё происходит в рендере
+        fetch('https://wedev-api.sky.pro/api/v1/gleb-fokin/comments', {
+            method: 'POST',
+            body: JSON.stringify({
+                name,
+                date: dateString,
+                text: comment,
+                likes: 0,
+                isLiked: false,
+            }),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                fetch('https://wedev-api.sky.pro/api/v1/gleb-fokin/comments')
+                    .then((response) => response.json())
+                    .then((updatedData) => {
+                        updateCommentsData(updatedData.comments || []);
+                        renderComments();
+                    });
+            });
 
         nameInput.value = '';
         commentInput.value = '';
