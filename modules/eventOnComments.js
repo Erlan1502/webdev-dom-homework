@@ -52,20 +52,54 @@ export const addComment = () => {
 
         const currentDate = new Date();
         const dateString = currentDate;
+        nameInput.disabled = true;
+        commentInput.disabled = true;
+        addButton.disabled = true;
+        addButton.textContent = 'Добавление...';
         //Убрано по причине дальнейшей не надобности, всё происходит в рендере
-        fetch('https://wedev-api.sky.pro/api/v1/gleb-fokin/comments', {
-            method: 'POST',
-            body: JSON.stringify({
-                name,
-                date: dateString,
-                text: comment,
-                likes: 0,
-                isLiked: false,
-            }),
-        }).then(fetchAndRender());
-
-        nameInput.value = '';
-        commentInput.value = '';
-        renderComments();
+        const postComment = (retryCount = 3) => {
+            fetch('https://wedev-api.sky.pro/api/v1/gleb-fokin/comments', {
+                method: 'POST',
+                body: JSON.stringify({
+                    name,
+                    date: dateString,
+                    text: comment,
+                    likes: 0,
+                    isLiked: false,
+                    forceError: true,
+                }),
+            })
+                .then((response) => {
+                    if (response.ok) {
+                        return response.json();
+                    } else if (response.status === 500 && retryCount > 0) {
+                        console.log(
+                            `Ошибка 500. Осталось попыток: ${retryCount}`,
+                        );
+                        return delay(100).then(() =>
+                            postComment(retryCount - 1),
+                        );
+                    } else {
+                        throw new Error('Ошибка при добавлении комментария.');
+                    }
+                })
+                .then(() => {
+                    nameInput.value = '';
+                    commentInput.value = '';
+                })
+                .then(fetchAndRender())
+                .catch(() => {
+                    alert(
+                        'Проверьте интернет соединение. Что-то пошло не так.',
+                    );
+                })
+                .finally(() => {
+                    nameInput.disabled = false;
+                    commentInput.disabled = false;
+                    addButton.disabled = false;
+                    addButton.textContent = 'Написать';
+                });
+        };
+        postComment();
     });
 };

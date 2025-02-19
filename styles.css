@@ -14,7 +14,7 @@
 }
 
 .-loading-like {
-    animation: rotating 2s linear infinite;
+    animation: rotating 2s linear infinite !important;
 }
 body {
     margin: 0;

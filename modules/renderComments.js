@@ -1,30 +1,20 @@
+/* eslint-disable prettier/prettier */
 import { commentsData } from './comments.js';
-import { addAnswer, addComment, addLike } from './eventOnComments.js';
-// const commentInput = document.querySelector('.add-form-text');
+import { escapeHTML } from './escapeHTML.js';
+const commentInput = document.querySelector('.add-form-text');
 const comments = document.querySelector('.comments');
-const formatDate = (dateString) => {
-    if (!dateString) return 'Неизвестно';
-    const date = new Date(dateString);
-    return date.toLocaleString('ru-RU', {
-        day: '2-digit',
-        month: '2-digit',
-        year: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-    });
-};
 export const renderComments = () => {
     comments.innerHTML = commentsData
         .map(
             (comment, index) => `
         <li class="comment" data-index="${index}">
           <div class="comment-header">
-            <div>${comment.author.name}</div>
-            <div>${formatDate(comment.date)}</div>
+            <div>${escapeHTML(comment.name)}</div>
+            <div>${comment.date}</div>
           </div>
           <div class="comment-body">
             <div class="comment-text">
-              ${comment.text}
+              ${escapeHTML(comment.text)}
             </div>
           </div>
           <div class="comment-footer">
@@ -38,8 +28,32 @@ export const renderComments = () => {
         </li>`,
         )
         .join('');
-    addAnswer();
-    addLike();
+
+    document.querySelectorAll('.like-button').forEach((button) => {
+        button.addEventListener('click', (event) => {
+            event.stopPropagation();
+            const index = button.dataset.index;
+            const targetComment = commentsData[index];
+            button.classList.add('-loading-like');
+
+            if (targetComment.isLiked) {
+                targetComment.likes--;
+            } else {
+                targetComment.likes++;
+            }
+            targetComment.isLiked = !targetComment.isLiked;
+
+            renderComments();
+        });
+    });
+
+    document.querySelectorAll('.comment').forEach((commentElement) => {
+        commentElement.addEventListener('click', () => {
+            const index = commentElement.dataset.index;
+            const targetComment = commentsData[index];
+            commentInput.value = `${targetComment.name}
+        \n> ${targetComment.text}\n`;
+        });
+    });
 };
-addComment();
-//Исправлено экранирование comment.name и comment.text при помощи удаления escapeHTML
+//hw-5 is done
