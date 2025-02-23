@@ -56,17 +56,14 @@ export const addComment = () => {
         commentInput.disabled = true;
         addButton.disabled = true;
         addButton.textContent = 'Добавление...';
-        //Убрано по причине дальнейшей не надобности, всё происходит в рендере
+
         const postComment = (retryCount = 3) => {
             fetch('https://wedev-api.sky.pro/api/v1/gleb-fokin/comments', {
                 method: 'POST',
                 body: JSON.stringify({
                     name,
-                    date: dateString,
                     text: comment,
-                    likes: 0,
-                    isLiked: false,
-                    forceError: true,
+                    date: dateString,
                 }),
             })
                 .then((response) => {
@@ -87,7 +84,7 @@ export const addComment = () => {
                     nameInput.value = '';
                     commentInput.value = '';
                 })
-                .then(fetchAndRender())
+                .then(fetchAndRender)
                 .catch(() => {
                     alert(
                         'Проверьте интернет соединение. Что-то пошло не так.',
