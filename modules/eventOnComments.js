@@ -49,7 +49,12 @@ export const addComment = () => {
             alert('Пожалуйста, заполните все поля формы.');
             return;
         }
-
+        if (name.length < 3 || comment.length < 3) {
+            alert(
+                'Длина имени и комментария должны быть не менее 3-х символов.',
+            );
+            return;
+        }
         const currentDate = new Date();
         const dateString = currentDate;
 
@@ -64,13 +69,14 @@ export const addComment = () => {
         document.querySelector('.add-form').style.display = 'none';
         formContainer.appendChild(loader);
 
-        const postComment = (retryCount = 3) => {
+        const postComment = (retryCount = 0) => {
             fetch('https://wedev-api.sky.pro/api/v1/gleb-fokin/comments', {
                 method: 'POST',
                 body: JSON.stringify({
                     name,
                     text: comment,
                     date: dateString,
+                    forceError: true,
                 }),
             })
                 .then((response) => {
@@ -84,18 +90,24 @@ export const addComment = () => {
                             postComment(retryCount - 1),
                         );
                     } else {
-                        throw new Error('Ошибка при добавлении комментария.');
+                        throw new Error(
+                            'Ошибка при добавлении комментария, попробуйте позже',
+                        );
                     }
                 })
                 .then(() => {
                     nameInput.value = '';
                     commentInput.value = '';
                 })
-                .then(fetchAndRender)
-                .catch(() => {
-                    alert(
-                        'Проверьте интернет соединение. Что-то пошло не так.',
-                    );
+                .then(() => fetchAndRender())
+                .catch((error) => {
+                    if (error.message === 'Failed to fetch') {
+                        alert(
+                            'Проверьте интернет-соединение. Попробуйте позже...',
+                        );
+                    } else {
+                        alert(error.message);
+                    }
                 })
                 .finally(() => {
                     loader.remove();
