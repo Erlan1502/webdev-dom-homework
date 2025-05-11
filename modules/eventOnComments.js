@@ -52,10 +52,17 @@ export const addComment = () => {
 
         const currentDate = new Date();
         const dateString = currentDate;
-        nameInput.disabled = true;
-        commentInput.disabled = true;
-        addButton.disabled = true;
-        addButton.textContent = 'Добавление...';
+
+        const loader = document.createElement('div');
+        loader.className = 'loader';
+        loader.innerHTML = `
+            <div class="loader">Добавление комментария... подождите</div>
+        `;
+
+        const formContainer = document.querySelector('.container');
+
+        document.querySelector('.add-form').style.display = 'none';
+        formContainer.appendChild(loader);
 
         const postComment = (retryCount = 3) => {
             fetch('https://wedev-api.sky.pro/api/v1/gleb-fokin/comments', {
@@ -91,10 +98,8 @@ export const addComment = () => {
                     );
                 })
                 .finally(() => {
-                    nameInput.disabled = false;
-                    commentInput.disabled = false;
-                    addButton.disabled = false;
-                    addButton.textContent = 'Написать';
+                    loader.remove();
+                    document.querySelector('.add-form').style.display = 'block';
                 });
         };
         postComment();

@@ -47,14 +47,15 @@ export const renderComments = () => {
             const targetComment = commentsData[index];
             button.classList.add('-loading-like');
 
-            if (targetComment.isLiked) {
-                targetComment.likes--;
-            } else {
-                targetComment.likes++;
-            }
-            targetComment.isLiked = !targetComment.isLiked;
-
-            renderComments();
+            setTimeout(() => {
+                if (targetComment.isLiked) {
+                    targetComment.likes--;
+                } else {
+                    targetComment.likes++;
+                }
+                targetComment.isLiked = !targetComment.isLiked;
+                renderComments();
+            }, 2000);
         });
     });
 

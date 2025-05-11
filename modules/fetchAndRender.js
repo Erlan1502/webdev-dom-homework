@@ -3,6 +3,11 @@ import { updateCommentsData } from './comments.js';
 import { renderComments } from './renderComments.js';
 
 export const fetchAndRender = () => {
+    const commentsContainer = document.querySelector('.comments');
+    commentsContainer.innerHTML = `
+            <div class="loader-text">Загружаем комментарии...</div>
+    `;
+
     return fetch('https://wedev-api.sky.pro/api/v1/gleb-fokin/comments')
         .then((response) => {
             if (response.status === 500) {
@@ -14,8 +19,10 @@ export const fetchAndRender = () => {
             return response.json();
         })
         .then((data) => {
-            console.log(data.comments);
             updateCommentsData(data.comments || []);
             renderComments();
+        })
+        .catch((error) => {
+            console.error(error);
         });
 };

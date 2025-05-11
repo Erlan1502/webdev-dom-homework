@@ -131,8 +131,10 @@ body {
 
 .add-form-text {
     margin-top: 12px;
+    box-sizing: border-box;
     padding: 22px;
     resize: none;
+    width: 100%;
 }
 
 .add-form-row {
@@ -152,4 +154,7 @@ body {
 
 .add-form-button:hover {
     opacity: 0.9;
+}
+.loader {
+    color: white;
 }
