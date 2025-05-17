@@ -70,7 +70,7 @@ export const addComment = () => {
         formContainer.appendChild(loader);
 
         const postComment = (retryCount = 0) => {
-            fetch('https://wedev-api.sky.pro/api/v1/gleb-fokin/comments', {
+            fetch('https://wedev-api.sky.pro/api/v2/Erlan/comments', {
                 method: 'POST',
                 body: JSON.stringify({
                     name,

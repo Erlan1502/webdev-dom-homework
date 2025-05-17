@@ -7,8 +7,10 @@ export const fetchAndRender = () => {
     commentsContainer.innerHTML = `
             <div class="loader-text">Загружаем комментарии...</div>
     `;
-
-    return fetch('https://wedev-api.sky.pro/api/v1/gleb-fokin/comments')
+    const token = localStorage.getItem('token');
+    return fetch('https://wedev-api.sky.pro/api/v2/Erlan/comments', {
+        headers: { Authorizaton: `Bearer: ${token}` },
+    })
         .then((response) => {
             if (response.status === 500) {
                 throw new Error('Сервер сломан, попробуйте позже.');
