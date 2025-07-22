@@ -3,9 +3,8 @@ import { renderComments } from './renderComments.js';
 import { commentsData } from './comments.js';
 import { escapeHTML } from './escapeHTML.js';
 import { fetchAndRender } from './fetchAndRender.js';
-const commentInput = document.querySelector('.add-form-text');
-const addButton = document.querySelector('.add-form-button');
-const nameInput = document.querySelector('.add-form-name');
+import { postComments } from './api.js';
+
 function delay(interval = 300) {
     return new Promise((resolve) => {
         setTimeout(() => {
@@ -33,6 +32,7 @@ export const addLike = () => {
     });
 };
 export const addAnswer = () => {
+    const commentInput = document.querySelector('.add-form-text');
     document.querySelectorAll('.comment').forEach((commentElement) => {
         commentElement.addEventListener('click', () => {
             const index = commentElement.dataset.index;
@@ -42,6 +42,9 @@ export const addAnswer = () => {
     });
 };
 export const addComment = () => {
+    const commentInput = document.querySelector('.add-form-text');
+    const addButton = document.querySelector('.add-form-button');
+    const nameInput = document.querySelector('.add-form-name');
     addButton.addEventListener('click', () => {
         const name = escapeHTML(nameInput.value.trim());
         const comment = escapeHTML(commentInput.value.trim());
@@ -70,14 +73,11 @@ export const addComment = () => {
         formContainer.appendChild(loader);
 
         const postComment = (retryCount = 0) => {
-            fetch('https://wedev-api.sky.pro/api/v2/Erlan/comments', {
-                method: 'POST',
-                body: JSON.stringify({
-                    name,
-                    text: comment,
-                    date: dateString,
-                    forceError: true,
-                }),
+            postComments({
+                name,
+                text: comment,
+                date: dateString,
+                forceError: true,
             })
                 .then((response) => {
                     if (response.ok) {

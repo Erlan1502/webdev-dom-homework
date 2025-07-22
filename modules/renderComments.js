@@ -1,8 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { commentsData } from './comments.js';
 import { escapeHTML } from './escapeHTML.js';
-const commentInput = document.querySelector('.add-form-text');
-const comments = document.querySelector('.comments');
 const formatDate = (dateString) => {
     if (!dateString) return 'Неизвестно';
     const date = new Date(dateString);
@@ -15,7 +13,9 @@ const formatDate = (dateString) => {
     });
 };
 export const renderComments = () => {
-    comments.innerHTML = commentsData
+    const commentInput = document.querySelector('.add-form-text');
+    const app = document.getElementById('app');
+    const commentsHtml = commentsData
         .map(
             (comment, index) => `
         <li class="comment" data-index="${index}">
@@ -39,7 +39,26 @@ export const renderComments = () => {
         </li>`,
         )
         .join('');
-
+    const appHtml = `<div class="container">
+            <ul class="comments">${commentsHtml}</ul>
+            <div class="add-form">
+                <input
+                    type="text"
+                    class="add-form-name"
+                    placeholder="Введите ваше имя"
+                />
+                <textarea
+                    type="textarea"
+                    class="add-form-text"
+                    placeholder="Введите ваш коментарий"
+                    rows="4"
+                ></textarea>
+                <div class="add-form-row">
+                    <button class="add-form-button">Написать</button>
+                </div>
+            </div>
+        </div>`;
+    app.innerHTML = appHtml;
     document.querySelectorAll('.like-button').forEach((button) => {
         button.addEventListener('click', (event) => {
             event.stopPropagation();

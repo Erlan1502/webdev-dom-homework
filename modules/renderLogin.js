@@ -1,4 +1,8 @@
 /* eslint-disable prettier/prettier */
+import { login, updateToken } from './api.js';
+import { fetchAndRender } from './fetchAndRender.js';
+import { renderRegistration } from './renderRegistration.js';
+
 export const renderLogin = () => {
     const app = document.getElementById(`app`);
     app.innerHTML = `<h1>Страница входа</h1>
@@ -22,4 +26,28 @@ export const renderLogin = () => {
             <button class="button" id="login-button">Войти</button>
             <button class="button" id="reg-button">Зарегистрироваться</button>
         </div>`;
+
+    const button = document.getElementById('login-button');
+    const loginElement = document.getElementById('login-input');
+    const passwordElement = document.getElementById('password-input');
+
+    button.addEventListener('click', () => {
+        login({
+            login: loginElement.value,
+            password: passwordElement.value,
+        })
+            .then((responseData) => {
+                updateToken(responseData.user.token);
+                localStorage.setItem('authToken', responseData.user.token);
+                fetchAndRender();
+            })
+            .catch((error) => {
+                alert('Ошибка входа: ' + error.message);
+            });
+    });
+
+    const buttonReg = document.getElementById('reg-button');
+    buttonReg.addEventListener('click', () => {
+        renderRegistration();
+    });
 };
