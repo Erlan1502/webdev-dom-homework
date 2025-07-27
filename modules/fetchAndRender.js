@@ -3,6 +3,13 @@ import { updateCommentsData } from './comments.js';
 import { renderComments } from './renderComments.js';
 import { getComments } from './api.js';
 import { addComment } from './eventOnComments.js';
+import { updateToken } from './api.js';
+import { renderRegistration } from './renderRegistration.js';
+const handleLogout = () => {
+    updateToken(''); // Очищаем токен
+    localStorage.removeItem('authToken'); // Удаляем из хранилища
+    renderRegistration(); // Переходим на страницу регистрации
+};
 
 export const fetchAndRender = () => {
     const commentsContainer = document.querySelector('.comments');
@@ -17,6 +24,9 @@ export const fetchAndRender = () => {
             addComment();
         })
         .catch((error) => {
+            if (error.message.includes('401')) {
+                handleLogout(); // Автоматический выход при неавторизованном доступе
+            }
             console.error(error);
         });
 };

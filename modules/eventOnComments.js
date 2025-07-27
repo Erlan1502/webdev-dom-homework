@@ -45,9 +45,14 @@ export const addComment = () => {
     const commentInput = document.querySelector('.add-form-text');
     const addButton = document.querySelector('.add-form-button');
     const nameInput = document.querySelector('.add-form-name');
+    const token = localStorage.getItem('authToken');
     addButton.addEventListener('click', () => {
         const name = escapeHTML(nameInput.value.trim());
         const comment = escapeHTML(commentInput.value.trim());
+        if (!token) {
+            alert('Вы не авторизованы. Зарегистрируйтесь или войдите.');
+            return;
+        }
         if (name === '' || comment === '') {
             alert('Пожалуйста, заполните все поля формы.');
             return;
@@ -89,9 +94,13 @@ export const addComment = () => {
                         return delay(100).then(() =>
                             postComment(retryCount - 1),
                         );
+                    } else if (!token) {
+                        alert(
+                            'Вы не авторизованы, зарегистрируйтесь или войдите в аккаунт для добавления комментария',
+                        );
                     } else {
                         throw new Error(
-                            'Ошибка при добавлении комментария, попробуйте позже',
+                            'Ошибка при добавлении комментария, попробуйте позже!!!',
                         );
                     }
                 })

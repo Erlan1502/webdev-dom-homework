@@ -58,7 +58,7 @@ export function login({ login, password }) {
 }
 
 export function registration({ login, name, password }) {
-    return fetch(`${authHost}/register`, {
+    return fetch(`${authHost}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ login, name, password }),
