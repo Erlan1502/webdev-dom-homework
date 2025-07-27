@@ -6,9 +6,9 @@ import { addComment } from './eventOnComments.js';
 import { updateToken } from './api.js';
 import { renderRegistration } from './renderRegistration.js';
 const handleLogout = () => {
-    updateToken(''); // Очищаем токен
-    localStorage.removeItem('authToken'); // Удаляем из хранилища
-    renderRegistration(); // Переходим на страницу регистрации
+    updateToken('');
+    localStorage.removeItem('authToken');
+    renderRegistration();
 };
 
 export const fetchAndRender = () => {
@@ -18,14 +18,14 @@ export const fetchAndRender = () => {
     `;
     return getComments()
         .then((response) => {
-            console.log('Ответ от API:', response.comments); // Проверка
+            console.log('Ответ от API:', response.comments);
             updateCommentsData(response.comments || []);
             renderComments();
             addComment();
         })
         .catch((error) => {
             if (error.message.includes('401')) {
-                handleLogout(); // Автоматический выход при неавторизованном доступе
+                handleLogout();
             }
             console.error(error);
         });

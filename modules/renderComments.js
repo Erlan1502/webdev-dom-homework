@@ -18,6 +18,7 @@ export const renderComments = () => {
     const commentInput = document.querySelector('.add-form-text');
     const app = document.getElementById('app');
     const token = localStorage.getItem('authToken');
+    console.log(token);
     const commentsHtml = commentsData
         .map(
             (comment, index) => `
@@ -66,6 +67,7 @@ export const renderComments = () => {
             if (token) {
                 localStorage.removeItem('authToken');
                 window.location.reload();
+                renderLogin();
             } else {
                 renderLogin();
             }

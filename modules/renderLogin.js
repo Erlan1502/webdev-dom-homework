@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { login, updateToken } from './api.js';
-import { fetchAndRender } from './fetchAndRender.js';
 import { renderRegistration } from './renderRegistration.js';
+import { renderComments } from './renderComments.js';
 
 export const renderLogin = () => {
     const app = document.getElementById(`app`);
@@ -39,11 +39,12 @@ export const renderLogin = () => {
             .then((responseData) => {
                 updateToken(responseData.user.token);
                 localStorage.setItem('authToken', responseData.user.token);
-                fetchAndRender();
             })
             .catch((error) => {
                 alert('Ошибка входа: ' + error.message);
             });
+        alert('Вы успешно вошли.');
+        renderComments();
     });
 
     const buttonReg = document.getElementById('reg-button');

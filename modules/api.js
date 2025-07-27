@@ -36,7 +36,6 @@ export function postComments({ name, text, date }) {
         method: 'POST',
         headers: {
             Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
         },
         body: JSON.stringify({ name, text, date }),
     }).then((response) => {
@@ -47,7 +46,6 @@ export function postComments({ name, text, date }) {
 export function login({ login, password }) {
     return fetch(`${authHost}/login`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ login, password }),
     }).then((response) => {
         if (!response.ok) {
@@ -60,7 +58,6 @@ export function login({ login, password }) {
 export function registration({ login, name, password }) {
     return fetch(`${authHost}`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ login, name, password }),
     }).then((response) => {
         if (!response.ok) {

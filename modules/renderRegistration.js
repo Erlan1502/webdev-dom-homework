@@ -1,7 +1,7 @@
-import { registration, updateToken } from './api.js';
-import { fetchAndRender } from './fetchAndRender.js';
-import { renderLogin } from './renderLogin.js';
 /* eslint-disable prettier/prettier */
+import { registration, updateToken } from './api.js';
+import { renderComments } from './renderComments.js';
+import { renderLogin } from './renderLogin.js';
 
 export const renderRegistration = () => {
     const app = document.getElementById(`app`);
@@ -47,11 +47,13 @@ export const renderRegistration = () => {
             .then((responseData) => {
                 updateToken(responseData.user.token); //Сохранение для следующей сессии
                 localStorage.setItem('authToken', responseData.user.token);
-                fetchAndRender();
+                alert('Вы успешно зарегистрировались.');
             })
             .catch((error) => {
                 alert('Ошибка регистрации: ' + error.message);
             });
+
+        renderComments();
     });
     const buttonLogin = document.getElementById('login-button');
     buttonLogin.addEventListener('click', () => {
