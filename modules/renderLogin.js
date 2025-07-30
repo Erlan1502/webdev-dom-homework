@@ -32,19 +32,33 @@ export const renderLogin = () => {
     const passwordElement = document.getElementById('password-input');
 
     button.addEventListener('click', () => {
+        const loginValue = loginElement.value.trim();
+        const passwordValue = passwordElement.value.trim();
+
+        if (!loginValue || !passwordValue) {
+            alert('Заполните все поля');
+            return;
+        }
+
         login({
-            login: loginElement.value,
-            password: passwordElement.value,
+            login: loginValue,
+            password: passwordValue,
         })
             .then((responseData) => {
+                if (!responseData.user?.token) {
+                    throw new Error('Ошибка авторизации');
+                }
                 updateToken(responseData.user.token);
                 localStorage.setItem('authToken', responseData.user.token);
+                return renderComments();
+            })
+            .then(() => {
+                alert('Вы успешно вошли.');
             })
             .catch((error) => {
+                console.error('Login error:', error);
                 alert('Ошибка входа: ' + error.message);
             });
-        alert('Вы успешно вошли.');
-        renderComments();
     });
 
     const buttonReg = document.getElementById('reg-button');

@@ -48,10 +48,12 @@ export function login({ login, password }) {
         method: 'POST',
         body: JSON.stringify({ login, password }),
     }).then((response) => {
-        if (!response.ok) {
-            throw new Error('Неверный логин или пароль');
-        }
-        return response.json();
+        return response.json().then((data) => {
+            if (!response.ok || !data.user || !data.user.token) {
+                throw new Error(data.error || 'Неверный логин или пароль');
+            }
+            return data;
+        });
     });
 }
 

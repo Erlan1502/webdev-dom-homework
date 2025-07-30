@@ -19,6 +19,10 @@ export const renderComments = () => {
     const app = document.getElementById('app');
     const token = localStorage.getItem('authToken');
     console.log(token);
+    if (!token) {
+        console.log('Нет токена, возврат в логин');
+        return renderLogin();
+    }
     const commentsHtml = commentsData
         .map(
             (comment, index) => `
