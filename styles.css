@@ -181,3 +181,78 @@ body {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(188, 236, 48, 0.2);
 }
+/* Добавочные стили для авторизации */
+.auth-form {
+    width: 400px;
+    padding: 40px;
+    background: radial-gradient(
+        75.42% 75.42% at 50% 42.37%,
+        rgba(53, 53, 53, 0) 22.92%,
+        #7334ea 100%
+    );
+    border-radius: 20px;
+    box-shadow: 0 20px 67px rgba(0, 0, 0, 0.08);
+}
+
+.auth-title {
+    color: #ffffff;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 28px;
+}
+
+.auth-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.auth-input {
+    padding: 15px 20px;
+    border-radius: 10px;
+    border: none;
+    font-size: 16px;
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+.auth-input:focus {
+    outline: 2px solid #bcec30;
+}
+
+.auth-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.auth-submit-button {
+    padding: 15px;
+    background-color: #bcec30;
+    border: none;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.auth-submit-button:hover {
+    background-color: #a8d420;
+    transform: translateY(-2px);
+}
+
+.auth-switch-button {
+    padding: 15px;
+    background: transparent;
+    border: 1px solid;
+    border-radius: 10px;
+    color: #bcec30;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.auth-switch-button:hover {
+    background: rgba(188, 236, 48, 0.1);
+}

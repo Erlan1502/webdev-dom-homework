@@ -5,33 +5,35 @@ import { renderLogin } from './renderLogin.js';
 
 export const renderRegistration = () => {
     const app = document.getElementById(`app`);
-    app.innerHTML = `<h1>Страница регистрации</h1>
-        <div class="form">
-            <h3 class="form-title">Форма регистрации</h3>
-            <div class="form-row">
+    app.innerHTML = `<div class="container">
+        <div class="auth-form">
+            <h1 class="auth-title">Регистрация</h1>
+            <div class="auth-fields">
                 <input 
                     type="text" 
                     id="login-input" 
-                    class="input" 
+                    class="auth-input" 
                     placeholder="Логин"
                 />
                 <input 
                     type="text" 
                     id="name-input" 
-                    class="input" 
+                    class="auth-input" 
                     placeholder="Имя"
                 />
                 <input
                     type="password"
                     id="password-input"
-                    class="input"
+                    class="auth-input"
                     placeholder="Пароль"
                 />
             </div>
-            <br />
-            <button class="button" id="reg-button">Зарегистрироваться</button>
-            <button class="button" id="login-button">Войти</button>
-        </div>`;
+            <div class="auth-buttons">
+                <button class="auth-submit-button" id="reg-button">Зарегистрироваться</button>
+                <button class="auth-switch-button" id="login-button">Войти</button>
+            </div>
+        </div>
+    </div>`;
 
     const buttonReg = document.getElementById('reg-button');
     const loginElement = document.getElementById('login-input');

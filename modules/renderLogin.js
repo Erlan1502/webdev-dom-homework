@@ -2,30 +2,33 @@
 import { login, updateToken } from './api.js';
 import { renderRegistration } from './renderRegistration.js';
 import { renderComments } from './renderComments.js';
+import { fetchAndRender } from './fetchAndRender.js';
 
 export const renderLogin = () => {
     const app = document.getElementById(`app`);
-    app.innerHTML = `<h1>Страница входа</h1>
-        <div class="form">
-            <h3 class="form-title">Форма входа</h3>
-            <div class="form-row">
+    app.innerHTML = `<div class="container">
+        <div class="auth-form">
+            <h1 class="auth-title">Вход</h1>
+            <div class="auth-fields">
                 <input 
                     type="text" 
                     id="login-input" 
-                    class="input" 
+                    class="auth-input" 
                     placeholder="Логин"
                 />
                 <input
                     type="password"
                     id="password-input"
-                    class="input"
+                    class="auth-input"
                     placeholder="Пароль"
                 />
             </div>
-            <br />
-            <button class="button" id="login-button">Войти</button>
-            <button class="button" id="reg-button">Зарегистрироваться</button>
-        </div>`;
+            <div class="auth-buttons">
+                <button class="auth-submit-button" id="login-button">Войти</button>
+                <button class="auth-switch-button" id="reg-button">Зарегистрироваться</button>
+            </div>
+        </div>
+    </div>`;
 
     const button = document.getElementById('login-button');
     const loginElement = document.getElementById('login-input');
@@ -50,7 +53,10 @@ export const renderLogin = () => {
                 }
                 updateToken(responseData.user.token);
                 localStorage.setItem('authToken', responseData.user.token);
-                return renderComments();
+
+                renderComments();
+
+                return fetchAndRender();
             })
             .then(() => {
                 alert('Вы успешно вошли.');
