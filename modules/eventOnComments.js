@@ -82,7 +82,7 @@ export const addComment = () => {
                 name,
                 text: comment,
                 date: dateString,
-                forceError: true,
+                // ЗАБЫЛ УБРАТЬ forceError: true,
             })
                 .then((response) => {
                     if (response.ok) {

@@ -19,10 +19,7 @@ export const renderComments = () => {
     const app = document.getElementById('app');
     const token = localStorage.getItem('authToken');
     console.log(token);
-    if (!token) {
-        console.log('Нет токена, возврат в логин');
-        return renderLogin();
-    }
+    //Убрал проверку токена, теперь сразу на РендерКомментс
     const commentsHtml = commentsData
         .map(
             (comment, index) => `
@@ -97,11 +94,13 @@ export const renderComments = () => {
         });
     });
 
-    document.querySelectorAll('.comment').forEach((commentElement) => {
-        commentElement.addEventListener('click', () => {
-            const index = commentElement.dataset.index;
-            const targetComment = commentsData[index];
-            commentInput.value = `${targetComment.author.name}\n> ${targetComment.text}\n`;
+    if (commentInput) { // ПРОВЕРКА
+        document.querySelectorAll('.comment').forEach((commentElement) => {
+            commentElement.addEventListener('click', () => {
+                const index = commentElement.dataset.index;
+                const targetComment = commentsData[index];
+                commentInput.value = `> ${targetComment.text}\n${targetComment.author.name}, `;
+            });
         });
-    });
+    }
 };
