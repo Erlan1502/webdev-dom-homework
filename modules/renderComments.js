@@ -15,7 +15,6 @@ const formatDate = (dateString) => {
 };
 
 export const renderComments = () => {
-    const commentInput = document.querySelector('.add-form-text');
     const app = document.getElementById('app');
     const token = localStorage.getItem('authToken');
     console.log(token);
@@ -93,7 +92,8 @@ export const renderComments = () => {
             }, 2000);
         });
     });
-
+    const commentInput = document.querySelector('.add-form-text');
+    // Не читало commentInput до прогрузки, переместил сюда.
     if (commentInput) { // ПРОВЕРКА
         document.querySelectorAll('.comment').forEach((commentElement) => {
             commentElement.addEventListener('click', () => {
