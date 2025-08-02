@@ -46,6 +46,7 @@ export const addComment = () => {
     const addButton = document.querySelector('.add-form-button');
     const nameInput = document.querySelector('.add-form-name');
     const token = localStorage.getItem('authToken');
+    if(!addButton){return;} // просто выходим из функции воизбежания ошибки
     addButton.addEventListener('click', () => {
         const name = escapeHTML(nameInput.value.trim());
         const comment = escapeHTML(commentInput.value.trim());

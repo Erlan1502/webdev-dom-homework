@@ -5,6 +5,7 @@ import { getComments } from './api.js';
 import { addComment } from './eventOnComments.js';
 import { updateToken } from './api.js';
 import { renderRegistration } from './renderRegistration.js';
+
 const handleLogout = () => {
     updateToken('');
     localStorage.removeItem('authToken');
@@ -12,11 +13,15 @@ const handleLogout = () => {
 };
 
 export const fetchAndRender = () => {
-    //comments не существовал до рендера - поэтому теперь app.
     const app = document.getElementById('app');
-    app.innerHTML = `
-            <div class="loader-text">Загружаем комментарии...</div>
+    const loadingHtml = `
+        <div class="container">
+            <ul class="comments">
+                <div class="loader-text">Загружаем комментарии...</div>
+            </ul>
+        </div>
     `;
+    app.innerHTML = loadingHtml;
     return getComments()
         .then((response) => {
             console.log('Ответ от API:', response.comments);
