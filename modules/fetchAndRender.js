@@ -12,8 +12,9 @@ const handleLogout = () => {
 };
 
 export const fetchAndRender = () => {
-    const commentsContainer = document.querySelector('.comments');
-    commentsContainer.innerHTML = `
+    //comments не существовал до рендера - поэтому теперь app.
+    const app = document.getElementById('app');
+    app.innerHTML = `
             <div class="loader-text">Загружаем комментарии...</div>
     `;
     return getComments()

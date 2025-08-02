@@ -45,18 +45,21 @@ export const renderComments = () => {
     const authButtonHtml = token
         ? `<button class="auth-button logout-button">Выйти</button>`
         : `<button class="auth-button login-button">Войти</button>`;
-
-    const appHtml = `<div class="container">
-            <div class="auth-section">${authButtonHtml}</div>
-            <ul class="comments">${commentsHtml}</ul>
-            <div class="add-form">
+        
+    const addFormHtml = token
+        ? `<div class="add-form">
                 <input type="text" class="add-form-name" placeholder="Введите ваше имя" />
-                <textarea type="textarea" class="add-form-text" 
+                <textarea type="textarea" class="add-form-text"
                     placeholder="Введите ваш комментарий" rows="4"></textarea>
                 <div class="add-form-row">
                     <button class="add-form-button">Написать</button>
                 </div>
-            </div>
+            </div>`
+        : '';//Разделил appHtml и добавил отдельной данный фрагмент для скрытия формы.
+    const appHtml = `<div class="container">
+            <div class="auth-section">${authButtonHtml}</div>
+            <ul class="comments">${commentsHtml}</ul>
+            ${addFormHtml}
         </div>`;
 
     app.innerHTML = appHtml;
@@ -94,6 +97,7 @@ export const renderComments = () => {
     });
     const commentInput = document.querySelector('.add-form-text');
     // Не читало commentInput до прогрузки, переместил сюда.
+    
     if (commentInput) { // ПРОВЕРКА
         document.querySelectorAll('.comment').forEach((commentElement) => {
             commentElement.addEventListener('click', () => {
