@@ -70,7 +70,6 @@ export const renderComments = () => {
             if (token) {
                 localStorage.removeItem('authToken');
                 window.location.reload();
-                renderLogin();
             } else {
                 renderLogin();
             }
