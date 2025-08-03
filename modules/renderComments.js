@@ -82,6 +82,11 @@ export const renderComments = () => {
     document.querySelectorAll('.like-button').forEach((button) => {
         button.addEventListener('click', (event) => {
             event.stopPropagation();
+            const token = localStorage.getItem('authToken'); // Только авторизированные пользователи для лайков.
+                if (!token) {
+                    alert('Чтобы поставить лайк, необходимо авторизоваться.');
+                    return;
+                }
             const index = button.dataset.index;
             const targetComment = commentsData[index];
             button.classList.add('-loading-like');

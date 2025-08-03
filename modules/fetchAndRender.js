@@ -2,7 +2,6 @@
 import { updateCommentsData } from './comments.js';
 import { renderComments } from './renderComments.js';
 import { getComments } from './api.js';
-import { addComment } from './eventOnComments.js';
 import { updateToken } from './api.js';
 import { renderRegistration } from './renderRegistration.js';
 
@@ -13,16 +12,20 @@ const handleLogout = () => {
     renderRegistration();
 };
 
-export const fetchAndRender = () => {
+export const fetchAndRender = (showLoadingScreen = true) => {
     const app = document.getElementById('app');
-    const loadingHtml = `
-        <div class="container">
-            <ul class="comments">
-                <div class="loader-text">Загружаем комментарии...</div>
-            </ul>
-        </div>
-    `;
-    app.innerHTML = loadingHtml;
+
+    if (showLoadingScreen) {
+        const loadingHtml = `
+            <div class="container">
+                <ul class="comments">
+                    <div class="loader-text">Загружаем комментарии...</div>
+                </ul>
+            </div>
+        `;
+        app.innerHTML = loadingHtml;
+    }
+
     return getComments()
         .then((response) => {
             console.log('Ответ от API:', response.comments);

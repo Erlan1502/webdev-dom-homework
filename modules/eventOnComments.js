@@ -109,7 +109,7 @@ export const addComment = () => {
                     nameInput.value = '';
                     commentInput.value = '';
                 })
-                .then(() => fetchAndRender())
+                .then(() => fetchAndRender(false))
                 .catch((error) => {
                     if (error.message === 'Failed to fetch') {
                         alert(
