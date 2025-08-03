@@ -48,8 +48,8 @@ export const addComment = () => {
     const token = localStorage.getItem('authToken');
     if(!addButton){return;} // просто выходим из функции воизбежания ошибки
     addButton.addEventListener('click', () => {
-        const name = escapeHTML(nameInput.value.trim());
-        const comment = escapeHTML(commentInput.value.trim());
+        const name = nameInput.value.trim(); // Было двойное экранирование.
+        const comment = commentInput.value.trim();
         if (!token) {
             alert('Вы не авторизованы. Зарегистрируйтесь или войдите.');
             return;

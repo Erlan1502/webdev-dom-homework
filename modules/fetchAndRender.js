@@ -28,7 +28,6 @@ export const fetchAndRender = () => {
             console.log('Ответ от API:', response.comments);
             updateCommentsData(response.comments || []);
             renderComments();
-            addComment();
         })
         .catch((error) => {
             if (error.message.includes('401')) {

@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { commentsData } from './comments.js';
 import { escapeHTML } from './escapeHTML.js';
+import { addComment } from './eventOnComments.js';
 import { renderLogin } from './renderLogin.js';
 const formatDate = (dateString) => {
     if (!dateString) return 'Неизвестно';
@@ -107,4 +108,5 @@ export const renderComments = () => {
             });
         });
     }
+    addComment();
 };
