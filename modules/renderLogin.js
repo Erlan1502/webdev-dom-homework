@@ -53,6 +53,7 @@ export const renderLogin = () => {
                 }
                 updateToken(responseData.user.token);
                 localStorage.setItem('authToken', responseData.user.token);
+                localStorage.setItem('userName', responseData.user.name); // Для реализации вставки имени
 
                 renderComments();
 

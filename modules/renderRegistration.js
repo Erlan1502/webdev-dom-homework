@@ -47,8 +47,9 @@ export const renderRegistration = () => {
             password: passwordElement.value,
         })
             .then((responseData) => {
-                updateToken(responseData.user.token); //Сохранение для следующей сессии
+                updateToken(responseData.user.token); 
                 localStorage.setItem('authToken', responseData.user.token);
+                localStorage.setItem('userName', responseData.user.name);
                 alert('Вы успешно зарегистрировались.');
             })
             .catch((error) => {

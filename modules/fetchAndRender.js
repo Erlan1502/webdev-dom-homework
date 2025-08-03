@@ -9,6 +9,7 @@ import { renderRegistration } from './renderRegistration.js';
 const handleLogout = () => {
     updateToken('');
     localStorage.removeItem('authToken');
+    localStorage.removeItem('userName');
     renderRegistration();
 };
 
